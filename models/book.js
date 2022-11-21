@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsToMany(models.Category, { through: models.BookCategory, foreignKey: 'book_id'});
+      this.belongsToMany(models.Author, { through: models.BookAuthor, foreignKey: 'book_id'});
     }
   }
   Book.init({
@@ -19,10 +20,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     description: DataTypes.STRING,
-    author: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
     release_date: {
       type: DataTypes.DATEONLY,
       allowNull: false

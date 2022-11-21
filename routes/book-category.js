@@ -5,6 +5,7 @@ const router = express.Router();
 const schemaValidator = require('../helpers/schema-validator');
 const schema = require('../schema/book-category');
 const bookCategoryController = require('../controllers/book-category-controller');
+const userValidator = require('../helpers/user-validator');
 
 router.get('/book-categories',
     (req, res, next) => bookCategoryController.get(req, res, next)

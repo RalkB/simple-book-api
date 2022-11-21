@@ -4,10 +4,12 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
 const BookCategoryRoutes = require('./routes/book-category');
 const BookRoutes = require('./routes/book');
 const categoryRoutes = require('./routes/category');
 const userRoutes = require('./routes/user');
+const authorRoutes = require('./routes/author');
 
 app.use(bodyParser.json());
 
@@ -18,6 +20,7 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(authorRoutes);
 app.use(BookCategoryRoutes);
 app.use(BookRoutes);
 app.use(categoryRoutes);

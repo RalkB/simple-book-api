@@ -34,6 +34,7 @@ module.exports = {
                 }
             }
         ).then(instance => {
+            if(!instance) return errors.unauthorizedError(res);
             const login = bcrypt.compareSync(req.body.password, instance.password);
 
             if(!login) return errors.unauthorizedError(res);

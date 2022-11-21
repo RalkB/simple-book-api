@@ -10,11 +10,13 @@ const BookRoutes = require('./routes/book');
 const categoryRoutes = require('./routes/category');
 const userRoutes = require('./routes/user');
 const authorRoutes = require('./routes/author');
+const searchRoutes = require('./routes/search');
 
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Headers", "*");
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE');
     app.use(cors());
     next();
@@ -25,6 +27,7 @@ app.use(BookCategoryRoutes);
 app.use(BookRoutes);
 app.use(categoryRoutes);
 app.use(userRoutes);
+app.use(searchRoutes);
 
 app.listen(3000, () => {
     console.log('server running');

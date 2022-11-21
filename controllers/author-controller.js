@@ -2,13 +2,20 @@
 
 const errors = require('../helpers/errors');
 const Author = require('../models').Author;
+const { Op } = require('sequelize');
 
 module.exports = {
     get: async (req, res, next) => {
         res.json(await Author.findAll());
     },
     getById: async (req, res, next) => {
-        Author.findOne({ where: {id: req.params.id}})
+        Author.findAll({ 
+            where: {
+                [Op.or]: [
+                    {id: req.params.id},
+                    {name: {[Op.like]: `%${req.params.id}%`}}
+                ]
+            }})
             .then( authorRes => {
                 if (authorRes) return res.json(authorRes);
 

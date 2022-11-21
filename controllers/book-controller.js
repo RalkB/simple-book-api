@@ -3,8 +3,9 @@
 const errors = require('../helpers/errors');
 const Book = require('../models').Book;
 const BookAuthor = require('../models').BookAuthor;
+const Author = require('../models').Author;
+const Category = require('../models').Category;
 const _ = require("lodash");
-const { Op } = require('sequelize');
 
 const parseBookAuthor = (bookId, authors) => {
     const bookAuthor = [];
@@ -20,7 +21,7 @@ const parseBookAuthor = (bookId, authors) => {
 
 module.exports = {
     get: async (req, res, next) => {
-        res.json(await Author.findAll({include: [Category]}));
+        res.json(await Book.findAll({include: [Category, Author]}));
     },
     getById: async (req, res, next) => {
         Book.findOne({ where: {id: req.params.id}})

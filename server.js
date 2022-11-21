@@ -11,6 +11,7 @@ const categoryRoutes = require('./routes/category');
 const userRoutes = require('./routes/user');
 const authorRoutes = require('./routes/author');
 const searchRoutes = require('./routes/search');
+const bookAuthorRoutes = require('./routes/book-author');
 
 app.use(bodyParser.json());
 
@@ -28,6 +29,7 @@ app.use(BookRoutes);
 app.use(categoryRoutes);
 app.use(userRoutes);
 app.use(searchRoutes);
+app.use(bookAuthorRoutes);
 
 app.listen(3000, () => {
     console.log('server running');

@@ -70,14 +70,14 @@ module.exports = {
     },
     put: async(req, res, next) => {
         BookCategory.update(req.body,
-                {where: {id: req.params.id}}
+                {where: {book_id: req.params.bookId, category_id: req.params.category_id}}
             ).then(result => {
                 res.json(req.body);
             })
             .catch(err => errors.internalServerError(res, err));
     },
     delete: async(req, res, next) => {
-        BookCategory.destroy({where: {id: req.params.id}})
+        BookCategory.destroy({where: {category_id: req.params.id}})
             .then(destroyedRows => {
                 if(destroyedRows) return res.status(204).json();
 

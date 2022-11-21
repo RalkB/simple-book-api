@@ -29,7 +29,7 @@ router.post('/book-categories/bulk',
     (req, res, next) => schemaValidator(req, res, next, schema.bulkPost),
     (req, res, next) => bookCategoryController.bulkPost(req, res, next)
 );
-router.put('/book-categories/:id',
+router.put('/book-categories/:bookId/:categoryId',
     (req, res, next) => userValidator(req, res, next),
     (req, res, next) => schemaValidator(req, res, next, schema.put),
     (req, res, next) => bookCategoryController.put(req, res, next)

@@ -2,29 +2,17 @@
 
 const errors = require('../helpers/errors');
 const Book = require('../models').Book;
-const BookAuthor = require('../models').BookAuthor;
 const Author = require('../models').Author;
 const Category = require('../models').Category;
-const _ = require("lodash");
-
-const parseBookAuthor = (bookId, authors) => {
-    const bookAuthor = [];
-    for (const author of authors) {
-        bookAuthor.push({
-            author_id: author,
-            book_id: bookId
-        });
-    }
-
-    return bookAuthor;
-}
+const BookCategory = require('../models').BookCategory;
+const BookAuthor = require('../models').BookAuthor;
 
 module.exports = {
     get: async (req, res, next) => {
         res.json(await Book.findAll({include: [Category, Author]}));
     },
     getById: async (req, res, next) => {
-        Book.findOne({ where: {id: req.params.id}})
+        Book.findOne({include:[Category, Author], where: {id: req.params.id}})
             .then( bookRes => {
                 if (bookRes) return res.json(bookRes);
 
@@ -32,17 +20,10 @@ module.exports = {
             });
     },
     post: async(req, res, next) => {
-        const bookBody = _.omit(req.body, "author")
-        const authors = req.body.authors; 
-
         try {
-            const book = await Book.create(bookBody);
-
-            const bookAuthors = parseBookAuthor(book.id, authors);
-            await BookAuthor.bulkCreate(bookAuthors);
+            await Book.create(req.body);
 
             res.status(204).json();
-
         } catch (error) {
             errors.internalServerError(res, error)
         }
@@ -56,12 +37,17 @@ module.exports = {
             .catch(err => errors.internalServerError(res, err));
     },
     delete: async(req, res, next) => {
-        Book.destroy({where: {id: req.params.id}})
-            .then(destroyedRows => {
-                if(destroyedRows) return res.status(204).json();
+        try {
+            const id = req.params.id;
 
-                errors.notFoundError(res);
-            })
-            .catch(err => errors.internalServerError(res, err));
+            await BookCategory.destroy({where: {book_id: id}});
+            await BookAuthor.destroy({where: {book_id: id}});
+            await Book.destroy({where: {id: id}});
+
+            return res.status(204).json()
+        } catch (error) {
+            console.log(error);
+            errors.internalServerError(res, error)
+        }
     }
 }
